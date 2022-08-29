@@ -1,0 +1,14 @@
+apiVersion: v2
+name: mrr-chart
+description: A Helm chart for the Maritime Resource Registry
+
+type: application
+
+version: 0.1.0
+
+appVersion: "0.0.1"
+
+dependencies:
+  - name: neo4j-standalone
+    version: 4.4.10
+    repository: https://neo4j.github.io/helm-charts/
