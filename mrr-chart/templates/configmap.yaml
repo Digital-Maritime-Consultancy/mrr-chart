@@ -13,7 +13,7 @@ data:
 
     spring.neo4j.uri=bolt://localhost:7687
     spring.neo4j.authentication.username=neo4j
-    spring.neo4j.authentication.password={{ .Values.neo4j-standalone.}}
+    spring.neo4j.authentication.password={{ .Values.neo4jStandalone.neo4j.password }}
 
     management.server.port={{ .Values.mrr.managementPort }}
     management.endpoint.health.probes.enabled=true

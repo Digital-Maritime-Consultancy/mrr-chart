@@ -88,6 +88,6 @@ tolerations: []
 
 affinity: {}
 
-neo4j-standalone:
+neo4jStandalone:
   neo4j:
     password: M87a5bXmqk2C9F
