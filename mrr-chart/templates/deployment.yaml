@@ -52,13 +52,16 @@ spec:
               port: management
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /conf
+              name: properties
       volumes:
         - name: properties
           configMap:
             name: {{ include "mrr-chart.fullname" . }}-cm
             items:
               - key: application.properties
-                path: /conf
+                path: application.properties
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
