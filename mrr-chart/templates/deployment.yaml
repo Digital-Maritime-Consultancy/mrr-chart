@@ -33,6 +33,8 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "--spring.config.location=/conf/application.properties"
           ports:
             - name: http
               containerPort: {{ .Values.mrr.serverPort }}
@@ -50,6 +52,13 @@ spec:
               port: management
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: properties
+          configMap:
+            name: {{ include "mrr-chart.fullname" . }}-cm
+            items:
+              - key: application.properties
+                path: /conf
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
