@@ -2,5 +2,8 @@ dependencies:
 - name: neo4j-standalone
   repository: https://neo4j.github.io/helm-charts/
   version: 4.4.10
-digest: sha256:24f864a9f08d59d447e319b83c4d201c7853b9321ad7e7fd60427d73baa13e5d
-generated: "2022-08-30T10:50:53.259212352+02:00"
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 17.1.4
+digest: sha256:9ddf554fa7a63ae576c68eeab206674d897450ce05576a59e00645a8c79d00c3
+generated: "2022-09-12T15:48:42.550361979+02:00"

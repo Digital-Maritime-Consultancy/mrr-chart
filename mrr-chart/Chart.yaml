@@ -13,3 +13,6 @@ dependencies:
     alias: neo4jStandalone
     version: 4.4.10
     repository: https://neo4j.github.io/helm-charts/
+  - name: redis
+    version: 17.1.4
+    repository: https://charts.bitnami.com/bitnami

@@ -1,4 +1,3 @@
----
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -11,9 +10,13 @@ data:
 
     server.port={{ .Values.mrr.serverPort }}
 
+    org.iala_aism.mrr.websocket-url=ws://localhost:8001
+
     spring.neo4j.uri=bolt://{{ .Release.Name }}:7687
     spring.neo4j.authentication.username=neo4j
     spring.neo4j.authentication.password={{ .Values.neo4jStandalone.neo4j.password }}
+
+    spring.redis.host={{ .Release.Name }}-redis-master
 
     management.server.port={{ .Values.mrr.managementPort }}
     management.endpoint.health.probes.enabled=true
