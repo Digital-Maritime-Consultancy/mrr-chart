@@ -10,7 +10,7 @@ data:
 
     server.port={{ .Values.mrr.serverPort }}
 
-    org.iala_aism.mrr.websocket-url=ws://localhost:8001
+    org.iala_aism.mrr.websocket-url=ws://{{ printf "%s-abnf" (include "mrr-chart.fullname" .) }}:8001
 
     spring.neo4j.uri=bolt://{{ .Release.Name }}:7687
     spring.neo4j.authentication.username=neo4j

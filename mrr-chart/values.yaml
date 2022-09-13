@@ -85,6 +85,13 @@ tolerations: []
 
 affinity: {}
 
+abnfTool:
+  image:
+    repository: ghcr.io/digital-maritime-consultancy/abnftool
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+
 neo4jStandalone:
   neo4j:
     password: M87a5bXmqk2C9F
@@ -97,3 +104,5 @@ neo4jStandalone:
 
 redis:
   architecture: standalone
+  auth:
+    enabled: false

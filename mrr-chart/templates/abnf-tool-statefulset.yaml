@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "mrr-chart.fullname" . }}-statefulset
+  labels:
+    {{- include "mrr-chart-abnf.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "mrr-chart-abnf.selectorLabels" . | nindent 6 }}
+  serviceName: {{ printf "%s-abnf" (include "mrr-chart.fullname" .) }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "mrr-chart-abnf.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ printf "%s-abnf" .Chart.Name }}
+          image: "{{ .Values.abnfTool.image.repository }}:{{ .Values.abnfTool.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.abnfTool.image.pullPolicy }}
+          env:
+            - name: REDIS_HOST
+              value: "{{ .Release.Name }}-redis-master"
+            - name: NEO4J_URI
+              value: "bolt://{{ .Release.Name }}:7687"
+            - name: NEO4J_USER
+              value: "neo4j"
+            - name: NEO4J_PASSWORD
+              value: "{{ .Values.neo4jStandalone.neo4j.password }}"
+          ports:
+            - name: ws
+              containerPort: 8081
+              protocol: TCP
+      initContainers:
+        - name: abnf-bootstrap
+          image: "{{ .Values.abnfTool.image.repository }}:{{ .Values.abnfTool.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.abnfTool.image.pullPolicy }}
+          env:
+            - name: REDIS_HOST
+              value: "{{ .Release.Name }}-redis-master"
+            - name: NEO4J_URI
+              value: "bolt://{{ .Release.Name }}:7687"
+            - name: NEO4J_USER
+              value: "neo4j"
+            - name: NEO4J_PASSWORD
+              value: "{{ .Values.neo4jStandalone.neo4j.password }}"
+          args:
+            - "bootstrap"

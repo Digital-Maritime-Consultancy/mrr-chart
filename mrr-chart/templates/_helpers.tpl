@@ -51,6 +51,26 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Common labels for abnf tool
+*/}}
+{{- define "mrr-chart-abnf.labels" -}}
+helm.sh/chart: {{ include "mrr-chart.chart" . }}
+{{ include "mrr-chart-abnf.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels for abnf tool
+*/}}
+{{- define "mrr-chart-abnf.selectorLabels" -}}
+app.kubernetes.io/name: {{ printf "%s-abnf" (include "mrr-chart.name" .) }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "mrr-chart.serviceAccountName" -}}
