@@ -40,7 +40,7 @@ spec:
               value: "{{ .Values.neo4jStandalone.neo4j.password }}"
           ports:
             - name: ws
-              containerPort: 8081
+              containerPort: 8001
               protocol: TCP
       initContainers:
         - name: abnf-bootstrap
