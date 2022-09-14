@@ -19,6 +19,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      restartPolicy: OnFailure
       containers:
         - name: abnf-bootstrap
           image: "{{ .Values.abnfTool.image.repository }}:{{ .Values.abnfTool.image.tag | default .Chart.AppVersion }}"
