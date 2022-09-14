@@ -1,17 +1,11 @@
-apiVersion: apps/v1
-kind: StatefulSet
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: {{ include "mrr-chart.fullname" . }}-statefulset
+  name: {{ include "mrr-chart.fullname" . }}-bootstrap
   labels:
-    {{- include "mrr-chart-abnf.labels" . | nindent 4 }}
+    {{- include "mrr-chart-bootstrap.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
-  selector:
-    matchLabels:
-      {{- include "mrr-chart-abnf.selectorLabels" . | nindent 6 }}
-  serviceName: {{ printf "%s-abnf" (include "mrr-chart.fullname" .) }}
+  completions: 1
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -19,14 +13,14 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "mrr-chart-abnf.selectorLabels" . | nindent 8 }}
+        {{- include "mrr-chart-bootstrap.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: {{ printf "%s-abnf" .Chart.Name }}
+        - name: abnf-bootstrap
           image: "{{ .Values.abnfTool.image.repository }}:{{ .Values.abnfTool.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.abnfTool.image.pullPolicy }}
           env:
@@ -38,7 +32,5 @@ spec:
               value: "neo4j"
             - name: NEO4J_PASSWORD
               value: "{{ .Values.neo4jStandalone.neo4j.password }}"
-          ports:
-            - name: ws
-              containerPort: 8001
-              protocol: TCP
+          args:
+            - "bootstrap"

@@ -71,6 +71,26 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Common labels for bootstrap job
+*/}}
+{{- define "mrr-chart-bootstrap.labels" -}}
+helm.sh/chart: {{ include "mrr-chart.chart" . }}
+{{ include "mrr-chart-bootstrap.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels for bootstrap job
+*/}}
+{{- define "mrr-chart-bootstrap.selectorLabels" -}}
+app.kubernetes.io/name: {{ printf "%s-bootstrap" (include "mrr-chart.name" .) }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "mrr-chart.serviceAccountName" -}}
