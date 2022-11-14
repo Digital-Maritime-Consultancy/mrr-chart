@@ -48,7 +48,7 @@ spec:
               port: management
           readinessProbe:
             httpGet:
-              path: /actuator/health/liveness
+              path: /actuator/health/readiness
               port: management
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
